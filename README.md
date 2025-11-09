@@ -129,8 +129,10 @@ npm start
 🔁 Abre un Pull Request
 
 ### 🧠 Autores / Authors
-👤 Nombre	💼 Rol	🔗 GitHub
-Celiz D.	💻 Frontend Developer	@CelizD
+| 👤 Nombre  | 💼 Rol              | 🔗 GitHub                  |
+|:---------:|:-----------------:|:-------------------------:|
+| **Celiz D.** | **Frontend Developer** | [@CelizD](https://github.com/CelizD) |
+
 
 ### 🌌 Licencia / License
 Distribuido bajo la licencia MIT.
