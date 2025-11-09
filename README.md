@@ -48,8 +48,6 @@ powered by **AI** and **video analytics**.  
 
 ## 🧩 Stack Tecnológico / Tech Stack  
 
-<div align="center" style="background-color:#161b22; color:#c9d1d9; padding:20px; border-radius:12px;">
-
 | 💻 **Frontend** | 🧠 **Backend (Integración)** |
 |-----------------|-----------------------------|
 | ⚛️ **React.js + TypeScript** | 🐍 **Python (FastAPI / Django)** |
