@@ -110,15 +110,17 @@ npm start
 
 ## 📂 Estructura del Proyecto / Project Structure
 
+```text
 📦 Frontend-Developer-Computer-Vision
 ├── 📁 src
-│ ├── 📁 components # Componentes reutilizables (UI, gráficos, botones, etc.)
-│ ├── 📁 pages # Vistas principales (Dashboard, Reports, Login, etc.)
-│ ├── 📁 services # Conexiones con APIs (Axios, Fetch, etc.)
-│ ├── 📁 assets # Imágenes, íconos y recursos visuales
-│ ├── App.tsx # Componente principal de React
-│ └── index.tsx # Punto de entrada y renderizado de React
-└── 📄 package.json # Configuración de dependencias y scripts
+│   ├── 📁 components    # Componentes reutilizables (UI, gráficos, botones, etc.)
+│   ├── 📁 pages         # Vistas principales (Dashboard, Reports, Login, etc.)
+│   ├── 📁 services      # Conexiones con APIs (Axios, Fetch, etc.)
+│   ├── 📁 assets        # Imágenes, íconos y recursos visuales
+│   ├── App.tsx          # Componente principal de React
+│   └── index.tsx        # Punto de entrada y renderizado de React
+└── 📄 package.json       # Configuración de dependencias y scripts
+
 
 ## 🧑‍💻 Contribución / Contributing
 
