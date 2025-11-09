@@ -106,18 +106,50 @@ npm start
 
 ```text
 📦 Frontend-Developer-Computer-Vision
+├── 📄 .gitignore
+├── 📄 package.json
+├── 📄 package-lock.json
+├── 📄 tsconfig.json
 ├── 📁 src
-│   ├── 📁 components    # Componentes reutilizables (UI, gráficos, botones, etc.)
-│   ├── 📁 pages         # Vistas principales (Dashboard, Reports, Login, etc.)
-│   ├── 📁 services      # Conexiones con APIs (Axios, Fetch, etc.)
-│   ├── 📁 assets        # Imágenes, íconos y recursos visuales
-│   ├── App.tsx          # Componente principal de React
-│   └── index.tsx        # Punto de entrada y renderizado de React
-└── 📄 package.json       # Configuración de dependencias y scripts
-✨ "La visión artificial no reemplaza al humano, lo potencia."
-
-– Equipo Computer Vision Attendance System 💡
-</div> ```
+│   ├── 📄 App.tsx          # Componente principal que orquesta el Context y el Layout
+│   ├── 📁 components       # Componentes reutilizables
+│   │   ├── 📄 PageHeader.tsx   # Encabezado genérico de las vistas
+│   │   ├── 📄 Toast.tsx        # Componente para notificaciones flotantes
+│   │   ├── 📁 charts       # Gráficos específicos (AttendanceChart, TrendChart)
+│   │   ├── 📁 dashboard    # Componentes específicos del Dashboard (MetricCards, RoomSelector)
+│   │   ├── 📁 layout       # Componentes de la estructura principal (Sidebar, MobileHeader)
+│   │   ├── 📁 modals       # Modales de edición y Tour (EditUserModal, TourModal)
+│   │   ├── 📁 settings     # Componentes para la vista de Ajustes (ManageUsers, ManageRooms)
+│   │   └── 📁 ui           # Componentes de UI genéricos (Toggles, Skeletons, Iconos)
+│   ├── 📁 context          # Gestión de estado global
+│   │   └── 📄 AppContext.tsx   # Contiene toda la lógica de estado y Handlers
+│   ├── 📁 hooks            # Lógica reutilizable de React (Custom Hooks)
+│   │   ├── 📄 useLocalStorage.tsx
+│   │   └── 📄 useAnalyticsChartData.ts # Hook para datos de gráficos de Analítica
+│   ├── 📁 services         # Simulación de la capa de Backend (Mock API)
+│   │   ├── 📄 authService.ts     # Lógica simulada de login/logout
+│   │   └── 📄 webSocketService.ts# Simulación de datos en vivo (Live Metrics/Events)
+│   ├── 📁 types            # Definiciones de TypeScript
+│   │   ├── 📄 global.d.ts      # Definición de AppContextType y modelos de datos
+│   │   └── 📄 defaults.ts      # Valores por defecto para el estado inicial (ej. DEFAULT_USERS)
+│   ├── 📁 utils            # Funciones auxiliares
+│   │   ├── 📄 i18n.ts            # Lógica de traducción
+│   │   └── 📄 sound.ts           # Control de sonido de alertas
+│   └── 📁 views            # Vistas principales/Páginas
+│       ├── 📁 auth         # Vistas de Autenticación
+│       │   ├── 📄 LoginScreen.tsx
+│       │   └── 📄 RecoveryScreen.tsx
+│       ├── 📄 Analytics.tsx    # Vista de métricas históricas y alertas
+│       ├── 📄 CamarasView.tsx  # Vista de cámaras y feeds
+│       ├── 📄 DashboardView.tsx# Dashboard principal
+│       ├── 📄 Help.tsx
+│       ├── 📄 Logs.tsx
+│       ├── 📄 NotFound.tsx
+│       ├── 📄 Profile.tsx
+│       ├── 📄 RegistroView.tsx
+│       ├── 📄 Reportes.tsx     # Vista de generación de reportes CSV
+│       └── 📄 Settings.tsx     # Vista de configuración principal
+└── ...
 ```
 ## 🧑‍💻 Contribución / Contributing
 🍴 Forkea este repositorio 
