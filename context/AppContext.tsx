@@ -11,8 +11,8 @@ import React, {
 // 1. Importaciones de Tipos
 // Importamos todos los tipos de nuestro módulo central
 import { 
-        Lang, RoomMetric, EventLog, DashboardWidgets, 
-        User, AppContextType, UserRole, NavItem, HistoricalMetric 
+        Lang, RoomMetric, EventLog, DashboardWidgets, 
+        User, AppContextType, UserRole, NavItem, HistoricalMetric 
 } from '../types/global.d';
 import { DEFAULT_USERS } from '../types/defaults';
 
@@ -51,28 +51,28 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     { room: "Aula 201", percentage: 48, occupied: 12, total: 25, status: 'Online' },
     { room: "Laboratorio", percentage: 92, occupied: 23, total: 25, status: 'Online' },
   ]);
-        const [eventLog, setEventLog] = useLocalStorage<EventLog[]>('asistencia-eventlog', []);
-        const [users, setUsers] = useLocalStorage<User[]>('asistencia-users', DEFAULT_USERS);
+        const [eventLog, setEventLog] = useLocalStorage<EventLog[]>('asistencia-eventlog', []);
+        const [users, setUsers] = useLocalStorage<User[]>('asistencia-users', DEFAULT_USERS);
 
-        // Datos históricos (simulados por defecto: 7 días basados en las aulas actuales)
-        const defaultHistorical = Array.from({ length: 7 }).map((_, i) => {
-                const dayOffset = 6 - i; // días atrás
-                const date = new Date(Date.now() - dayOffset * 24 * 60 * 60 * 1000).toISOString();
-                const rooms = metrics.reduce((acc, m) => {
-                        acc[m.room] = { percentage: m.percentage };
-                        return acc;
-                }, {} as Record<string, { percentage: number }>);
-                                const percentages = (Object.values(rooms) as Array<{ percentage: number }>).map(r => r.percentage);
-                                const sum = percentages.reduce((s, n) => s + n, 0);
-                        const globalPercent = Math.round((percentages.length > 0 ? sum / percentages.length : 0) || 0);
-                return { date, globalPercent, rooms } as HistoricalMetric;
-        });
+        // Datos históricos (simulados por defecto: 7 días basados en las aulas actuales)
+        const defaultHistorical = Array.from({ length: 7 }).map((_, i) => {
+                const dayOffset = 6 - i; // días atrás
+                const date = new Date(Date.now() - dayOffset * 24 * 60 * 60 * 1000).toISOString();
+                const rooms = metrics.reduce((acc, m) => {
+                        acc[m.room] = { percentage: m.percentage };
+                        return acc;
+                }, {} as Record<string, { percentage: number }>);
+                                const percentages = (Object.values(rooms) as Array<{ percentage: number }>).map(r => r.percentage);
+                                const sum = percentages.reduce((s, n) => s + n, 0);
+                        const globalPercent = Math.round((percentages.length > 0 ? sum / percentages.length : 0) || 0);
+                return { date, globalPercent, rooms } as HistoricalMetric;
+        });
 
-        const [historicalData, setHistoricalData] = useLocalStorage<HistoricalMetric[]>('asistencia-historical', defaultHistorical);
+        const [historicalData, setHistoricalData] = useLocalStorage<HistoricalMetric[]>('asistencia-historical', defaultHistorical);
 
   const [alertThreshold, setAlertThreshold] = useLocalStorage('asistencia-threshold', 90);
   const [defaultSeats, setDefaultSeats] = useLocalStorage('asistencia-default-seats', 20);
-// CORRECCIÓN 1: Se incluyeron los setters reales de useLocalStorage
+// CORREGIDO: Se incluyeron los setters reales de useLocalStorage
   const [notificationEmail, setNotificationEmail] = useLocalStorage('asistencia-notif-email', 'admin@institucion.com');
   const [enableEmailNotifications, setEnableEmailNotifications] = useLocalStorage('asistencia-notif-enable', false);
   const [dashboardWidgets, setDashboardWidgets] = useLocalStorage<DashboardWidgets>('asistencia-widgets', {
@@ -149,6 +149,25 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     setHasSeenTour(true);
   }, [setHasSeenTour]);
 
+// CORREGIDO: Handler para crear un nuevo usuario (simulado)
+const handleCreateUser = useCallback((newUser: User) => {
+    setUsers(prevUsers => {
+        // Asignar un ID único (simulado, aunque ManageUsers ya lo hace, lo reaseguramos aquí)
+        const id = crypto.randomUUID(); 
+        const userWithId = { ...newUser, id };
+        return [...prevUsers, userWithId];
+    });
+    // Loguear la acción
+    webSocketService.addEvent('alert.userCreated', { username: newUser.username }, 'info');
+}, [setUsers]);
+
+// CORREGIDO: Handler para eliminar un usuario
+const handleDeleteUser = useCallback((userId: string, username: string) => {
+    setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+    // Loguear la acción
+    webSocketService.addEvent('alert.userDeleted', { username: username }, 'warn');
+}, [setUsers]);
+
   
   // --- 9. Efectos Centrales (Conexión de Lógica) ---
 
@@ -174,7 +193,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       const onMetricsReceived = (newMetrics: RoomMetric[]) => setLiveMetrics([...newMetrics]);
       const onEventReceived = (allEvents: EventLog[]) => {
         setEventLog(allEvents);
-        // Lógica de Toast y Sonido (Centralizada aquí: CORRECCIÓN 3)
+        // Lógica de Toast y Sonido (Centralizada aquí)
         if (allEvents.length > 0 && (!lastEvent || allEvents[0].id !== lastEvent.id)) {
           const newEvent = allEvents[0];
           setLastEvent(newEvent);
@@ -221,7 +240,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   }, [lastEvent]);
 
 
-  // --- 10. Valor del Context (CORRECCIÓN 1 aplicada) ---
+  // --- 10. Valor del Context (TODOS LOS HANDLERS EXPUESTOS) ---
   const contextValue: AppContextType = {
     theme, setTheme,
     lang, setLang,
@@ -238,24 +257,27 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     defaultSeats, setDefaultSeats,
     notificationEmail, 
     enableEmailNotifications, 
-    setNotificationEmail, // CORREGIDO: Setter real
-    setEnableEmailNotifications, // CORREGIDO: Setter real
+    setNotificationEmail,
+    setEnableEmailNotifications,
     dashboardWidgets, setDashboardWidgets,
-        users, setUsers,
-        editingRoom,
-        setEditingRoom,
-        editingUser,
-        setEditingUser,
-        historicalData, setHistoricalData,
+    users, setUsers,
+    editingRoom,
+    setEditingRoom,
+    editingUser,
+    setEditingUser,
+    historicalData, setHistoricalData,
     lastEvent,
     isLoggingIn, authError,
     isLoading,
     handleLogin, handleLogout,
     isSidebarOpen, setIsSidebarOpen,
     authView, setAuthView,
-    tourStep, // EXPUESTO para App.tsx
-    setTourStep, // EXPUESTO para App.tsx
-    handleTourFinish, // EXPUESTO para App.tsx
+    tourStep,
+    setTourStep,
+    handleTourFinish,
+    // NUEVOS HANDLERS DE GESTIÓN DE USUARIOS
+    handleCreateUser,
+    handleDeleteUser,
   };
 
   return (

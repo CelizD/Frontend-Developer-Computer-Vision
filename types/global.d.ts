@@ -41,8 +41,6 @@ export type HistoricalMetric = {
 
 // --- Tipos para el Context API ---
 
-// (Recomendación: Mover todos estos tipos de funciones y estados aquí)
-
 export type AppContextType = {
   // Estado
   theme: 'dark' | 'light';
@@ -72,7 +70,7 @@ export type AppContextType = {
   editingRoom: RoomMetric | null;
   editingUser: User | null;
   
-  // CORRECCIÓN: Se añaden las propiedades del Tour
+  // Propiedades del Tour
   tourStep: number;
   
   // Setters y Handlers
@@ -97,9 +95,13 @@ export type AppContextType = {
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setAuthView: React.Dispatch<React.SetStateAction<'login' | 'recovery'>>;
   
-  // CORRECCIÓN: Se añaden los setters y handlers del Tour
+  // Handlers del Tour
   setTourStep: React.Dispatch<React.SetStateAction<number>>;
   handleTourFinish: () => void;
+
+  // NUEVOS Handlers de Gestión de Usuarios (CRUD)
+  handleCreateUser: (newUser: User) => void;
+  handleDeleteUser: (userId: string, username: string) => void;
 };
 
 export {};
