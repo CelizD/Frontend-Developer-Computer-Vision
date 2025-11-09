@@ -1,80 +1,101 @@
 <div align="center">
 
 # 💻 Frontend Developer – Computer Vision Attendance System  
-### 🧠 Sistema de Asistencia Automatizado con Visión por Computadora
+### 🧠 Sistema de Asistencia Automatizado con Visión por Computadora  
 
-![Banner](https://github.com/CelizD/Frontend-Developer-Computer-Vision/assets/banner-demo.png)
+<img src="https://github.com/CelizD/Frontend-Developer-Computer-Vision/assets/banner-demo.png" alt="Banner" width="100%">
 
 ---
+
+### 🏷️ Tecnologías Principales / Main Technologies  
+
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
+![MaterialUI](https://img.shields.io/badge/Material--UI-0081CB?style=for-the-badge&logo=mui&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
+![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 </div>
 
-## 🧾 Descripción / Description
-El **Frontend** de este proyecto proporciona una interfaz web moderna e intuitiva para el **Sistema de Asistencia Automatizado con Visión por Computadora**, que permite monitorear en tiempo real la ocupación de sillas en los salones de clase.
+---
 
-This **Frontend** provides a modern and intuitive web interface for the **Automated Attendance System using Computer Vision**, enabling real-time classroom seat occupancy monitoring.
+<div align="center" style="background-color:#0d1117; color:#c9d1d9; padding:20px; border-radius:12px;">
+
+## 🧾 Descripción / Description  
+
+El **Frontend** de este proyecto ofrece una interfaz **moderna**, **responsiva** e **intuitiva** para el  
+**Sistema de Asistencia Automatizado con Visión por Computadora**, que permite monitorear en tiempo real  
+la **ocupación de sillas** en salones de clase mediante análisis de video con **IA** y **Computer Vision**.  
+
+This **Frontend** provides a clean, responsive, and intuitive web interface for the  
+**Automated Attendance System using Computer Vision**, enabling real-time seat occupancy monitoring  
+powered by **AI** and **video analytics**.  
+
+</div>
 
 ---
 
-## 🎯 Objetivos / Objectives
+## 🎯 Objetivos / Objectives  
 
-| Español 🇪🇸 | English 🇬🇧 |
-|-------------|-------------|
+| 🇪🇸 Español | 🇬🇧 English |
+|:-----------:|:-----------:|
 | 📊 Visualizar métricas de asistencia en tiempo real | 📊 Display real-time attendance metrics |
-| 🪑 Mostrar ocupación de sillas mediante heatmaps | 🪑 Show seat occupancy through heatmaps |
-| 📈 Generar reportes automáticos y gráficos de asistencia | 📈 Generate automatic attendance reports |
-| ⚙️ Integrar con el backend mediante APIs REST | ⚙️ Integrate seamlessly with the backend REST API |
+| 🪑 Mostrar ocupación de sillas mediante heatmaps dinámicos | 🪑 Show seat occupancy through dynamic heatmaps |
+| 📈 Generar reportes automáticos con gráficos estadísticos | 📈 Generate automated statistical reports |
+| ⚙️ Integrar con el backend mediante APIs REST seguras | ⚙️ Integrate seamlessly with secure REST APIs |
 
 ---
 
-## 🧩 Stack Tecnológico / Tech Stack
+## 🧩 Stack Tecnológico / Tech Stack  
 
-### 🚀 **Frontend**
-- ⚛️ React.js + TypeScript  
-- 💅 HTML5 / CSS3 / JavaScript (ES6+)  
-- 📊 Chart.js → Gráficos de asistencia  
-- 🎨 Material UI / Bootstrap → Componentes y estilo  
-- 🌐 Axios → Conexión con API  
-- 🧭 React Router → Navegación  
-- 🧰 Git + GitHub → Control de versiones  
+<div align="center" style="background-color:#161b22; color:#c9d1d9; padding:20px; border-radius:12px;">
 
-### 🧠 **Backend (Integración)**
-- Python (FastAPI o Django)
-- PostgreSQL
-- OpenCV + YOLO (detección de objetos)
+| 💻 **Frontend** | 🧠 **Backend (Integración)** |
+|-----------------|-----------------------------|
+| ⚛️ **React.js + TypeScript** | 🐍 **Python (FastAPI / Django)** |
+| 💅 **HTML5 / CSS3 / JavaScript (ES6+)** | 🧮 **PostgreSQL** |
+| 📊 **Chart.js** – Gráficos de asistencia | 🎯 **OpenCV + YOLO** – Detección de ocupación |
+| 🎨 **Material UI / Bootstrap** – Diseño adaptable | 🔗 **REST API** para integración |
+| 🌐 **Axios** – Conexión con servidor | 🧠 **Modelo de Visión Artificial** entrenado |
+| 🧭 **React Router** – Navegación SPA | |
 
----
-
-## 🖼️ Vista Previa / Dashboard Preview
-
-### 🔹 **Dashboard Principal**
-Visualización de métricas en tiempo real, porcentajes de ocupación y alertas de baja asistencia.  
-*(Ejemplo visual simulado)*
-
-![Dashboard](https://raw.githubusercontent.com/CelizD/Frontend-Developer-Computer-Vision/main/preview/dashboard-sample.png)
+</div>
 
 ---
 
-### 🔹 **Heatmap de Ocupación**
-Mapa de calor que indica qué sillas están ocupadas o vacías en el aula.  
+## 🖥️ Vista Previa / Dashboard Preview  
+
+### 🔹 **Dashboard Principal**  
+Visualización en tiempo real de **porcentaje de ocupación**, **métricas de asistencia** y **alertas visuales**.  
+*(Ejemplo visual simulado)*  
+
+<img src="https://raw.githubusercontent.com/CelizD/Frontend-Developer-Computer-Vision/main/preview/dashboard-sample.png" alt="Dashboard" width="90%" style="border-radius:12px;">
+
+---
+
+### 🔹 **Heatmap de Ocupación**  
+Representación tipo **mapa de calor** de sillas ocupadas o vacías.  
 
 | 🟢 = Ocupada | ⚪ = Vacía |
 |--------------|------------|
 | 🟢 🟢 ⚪ ⚪ 🟢 | 🟢 ⚪ 🟢 ⚪ 🟢 |
 | ⚪ ⚪ 🟢 🟢 ⚪ | ⚪ ⚪ ⚪ 🟢 ⚪ |
 
-*(Representación visual del análisis de visión por computadora)*
+*(Simulación generada con módulo de Computer Vision – OpenCV/YOLO)*  
 
 ---
 
-### 🔹 **Gráficos de Tendencia**
-Reportes automáticos con **Chart.js** para visualizar asistencia histórica.
+### 🔹 **Gráficos de Tendencia**  
+Visualización histórica del registro de asistencia mediante **Chart.js**,  
+para detectar patrones o fluctuaciones.  
 
-![Chart Preview](https://raw.githubusercontent.com/CelizD/Frontend-Developer-Computer-Vision/main/preview/attendance-chart.png)
+<img src="https://raw.githubusercontent.com/CelizD/Frontend-Developer-Computer-Vision/main/preview/attendance-chart.png" alt="Chart Preview" width="90%" style="border-radius:12px;">
 
 ---
 
-## ⚙️ Instalación / Installation
+## ⚙️ Instalación / Installation  
 
 ```bash
 # 1️⃣ Clonar el repositorio
@@ -86,4 +107,39 @@ npm install
 
 # 3️⃣ Ejecutar el servidor de desarrollo
 npm start
+📂 Estructura del Proyecto / Project Structure
+bash
+Copiar código
+📦 Frontend-Developer-Computer-Vision
+├── 📁 src
+│   ├── 📁 components        # Componentes reutilizables (UI, gráficos, etc.)
+│   ├── 📁 pages             # Vistas principales (Dashboard, Reports, etc.)
+│   ├── 📁 services          # Conexiones con API (Axios)
+│   ├── 📁 assets            # Imágenes y recursos visuales
+│   ├── App.tsx              # Punto de entrada principal
+│   └── index.tsx            # Render principal de React
+└── package.json
+🧑‍💻 Contribución / Contributing
+🍴 Forkea este repositorio
 
+🌱 Crea una rama: git checkout -b feature/nueva-funcion
+
+💬 Realiza tus cambios y haz commit: git commit -m "Añadir nueva función"
+
+🚀 Envía tus cambios: git push origin feature/nueva-funcion
+
+🔁 Abre un Pull Request
+
+🧠 Autores / Authors
+👤 Nombre	💼 Rol	🔗 GitHub
+Celiz D.	💻 Frontend Developer	@CelizD
+
+🌌 Licencia / License
+Distribuido bajo la licencia MIT.
+Libre para uso académico y profesional.
+
+<div align="center" style="background-color:#0d1117; color:#c9d1d9; padding:25px; border-radius:16px;">
+✨ "La visión artificial no reemplaza al humano, lo potencia."
+
+– Equipo Computer Vision Attendance System 💡
+</div> ```
