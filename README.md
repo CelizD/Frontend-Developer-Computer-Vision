@@ -1,47 +1,89 @@
-# 💻 Frontend - Sistema de Asistencia Automatizado con Computer Vision
+<div align="center">
 
-## 🧠 Descripción
-Interfaz web del **Sistema de Asistencia Automatizado con Computer Vision**, desarrollada para visualizar en tiempo real la ocupación de sillas en los salones de clase.  
-El frontend permite a los administradores acceder a dashboards interactivos, generar reportes y configurar parámetros del sistema mediante una interfaz moderna, intuitiva y responsive.
+# 💻 Frontend Developer – Computer Vision Attendance System  
+### 🧠 Sistema de Asistencia Automatizado con Visión por Computadora
 
----
-
-## 🎯 Objetivo
-Diseñar y desarrollar una interfaz web que:
-- Muestre métricas de asistencia en tiempo real.
-- Permita generar reportes automáticos por clase o profesor.
-- Visualice la ocupación de sillas mediante gráficos y heatmaps.
-- Se integre fácilmente con la API del backend.
+![Banner](https://github.com/CelizD/Frontend-Developer-Computer-Vision/assets/banner-demo.png)
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
-- **React.js + TypeScript**
-- **HTML5 / CSS3 / JavaScript (ES6+)**
-- **Chart.js** → Visualización de datos
-- **Material-UI / Bootstrap** → Estilos y componentes visuales
-- **Axios** → Consumo de APIs REST
-- **Git / GitHub** → Control de versiones
+</div>
+
+## 🧾 Descripción / Description
+El **Frontend** de este proyecto proporciona una interfaz web moderna e intuitiva para el **Sistema de Asistencia Automatizado con Visión por Computadora**, que permite monitorear en tiempo real la ocupación de sillas en los salones de clase.
+
+This **Frontend** provides a modern and intuitive web interface for the **Automated Attendance System using Computer Vision**, enabling real-time classroom seat occupancy monitoring.
 
 ---
 
-## ⚙️ Funcionalidades Principales
-- Dashboard administrativo con métricas en tiempo real.  
-- Visualización de ocupación de salones.  
-- Reportes automáticos en formato gráfico.  
-- Interfaz responsive adaptable a diferentes dispositivos.  
-- Integración con API para obtener datos de detección de sillas.  
+## 🎯 Objetivos / Objectives
+
+| Español 🇪🇸 | English 🇬🇧 |
+|-------------|-------------|
+| 📊 Visualizar métricas de asistencia en tiempo real | 📊 Display real-time attendance metrics |
+| 🪑 Mostrar ocupación de sillas mediante heatmaps | 🪑 Show seat occupancy through heatmaps |
+| 📈 Generar reportes automáticos y gráficos de asistencia | 📈 Generate automatic attendance reports |
+| ⚙️ Integrar con el backend mediante APIs REST | ⚙️ Integrate seamlessly with the backend REST API |
 
 ---
 
-## 🚀 Instalación y Ejecución
+## 🧩 Stack Tecnológico / Tech Stack
+
+### 🚀 **Frontend**
+- ⚛️ React.js + TypeScript  
+- 💅 HTML5 / CSS3 / JavaScript (ES6+)  
+- 📊 Chart.js → Gráficos de asistencia  
+- 🎨 Material UI / Bootstrap → Componentes y estilo  
+- 🌐 Axios → Conexión con API  
+- 🧭 React Router → Navegación  
+- 🧰 Git + GitHub → Control de versiones  
+
+### 🧠 **Backend (Integración)**
+- Python (FastAPI o Django)
+- PostgreSQL
+- OpenCV + YOLO (detección de objetos)
+
+---
+
+## 🖼️ Vista Previa / Dashboard Preview
+
+### 🔹 **Dashboard Principal**
+Visualización de métricas en tiempo real, porcentajes de ocupación y alertas de baja asistencia.  
+*(Ejemplo visual simulado)*
+
+![Dashboard](https://raw.githubusercontent.com/CelizD/Frontend-Developer-Computer-Vision/main/preview/dashboard-sample.png)
+
+---
+
+### 🔹 **Heatmap de Ocupación**
+Mapa de calor que indica qué sillas están ocupadas o vacías en el aula.  
+
+| 🟢 = Ocupada | ⚪ = Vacía |
+|--------------|------------|
+| 🟢 🟢 ⚪ ⚪ 🟢 | 🟢 ⚪ 🟢 ⚪ 🟢 |
+| ⚪ ⚪ 🟢 🟢 ⚪ | ⚪ ⚪ ⚪ 🟢 ⚪ |
+
+*(Representación visual del análisis de visión por computadora)*
+
+---
+
+### 🔹 **Gráficos de Tendencia**
+Reportes automáticos con **Chart.js** para visualizar asistencia histórica.
+
+![Chart Preview](https://raw.githubusercontent.com/CelizD/Frontend-Developer-Computer-Vision/main/preview/attendance-chart.png)
+
+---
+
+## ⚙️ Instalación / Installation
+
 ```bash
-# Clonar el repositorio
+# 1️⃣ Clonar el repositorio
 git clone https://github.com/CelizD/Frontend-Developer-Computer-Vision.git
-cd frontend-asistencia-cv
+cd Frontend-Developer-Computer-Vision
 
-# Instalar dependencias
+# 2️⃣ Instalar dependencias
 npm install
 
-# Ejecutar el servidor de desarrollo
+# 3️⃣ Ejecutar el servidor de desarrollo
 npm start
+
