@@ -108,19 +108,19 @@ npm install
 # 3️⃣ Ejecutar el servidor de desarrollo
 npm start
 
-### 📂 Estructura del Proyecto / Project Structure
+## 📂 Estructura del Proyecto / Project Structure
+
 📦 Frontend-Developer-Computer-Vision
 ├── 📁 src
-│   ├── 📁 components        # Componentes reutilizables (UI, gráficos, etc.)
-│   ├── 📁 pages             # Vistas principales (Dashboard, Reports, etc.)
-│   ├── 📁 services          # Conexiones con API (Axios)
-│   ├── 📁 assets            # Imágenes y recursos visuales
-│   ├── App.tsx              # Punto de entrada principal
-│   └── index.tsx            # Render principal de React
-└── package.json
+│ ├── 📁 components # Componentes reutilizables (UI, gráficos, botones, etc.)
+│ ├── 📁 pages # Vistas principales (Dashboard, Reports, Login, etc.)
+│ ├── 📁 services # Conexiones con APIs (Axios, Fetch, etc.)
+│ ├── 📁 assets # Imágenes, íconos y recursos visuales
+│ ├── App.tsx # Componente principal de React
+│ └── index.tsx # Punto de entrada y renderizado de React
+└── 📄 package.json # Configuración de dependencias y scripts
 
-
-### 🧑‍💻 Contribución / Contributing
+## 🧑‍💻 Contribución / Contributing
 
 🍴 Forkea este repositorio
 🌱 Crea una rama: git checkout -b feature/nueva-funcion
@@ -128,13 +128,13 @@ npm start
 🚀 Envía tus cambios: git push origin feature/nueva-funcion
 🔁 Abre un Pull Request
 
-### 🧠 Autores / Authors
+## 🧠 Autores / Authors
 | 👤 Nombre  | 💼 Rol              | 🔗 GitHub                  |
 |:---------:|:-----------------:|:-------------------------:|
 | **Celiz D.** | **Frontend Developer** | [@CelizD](https://github.com/CelizD) |
 
 
-### 🌌 Licencia / License
+## 🌌 Licencia / License
 Distribuido bajo la licencia MIT.
 Libre para uso académico y profesional.
 
