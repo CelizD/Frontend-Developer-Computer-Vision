@@ -37,7 +37,7 @@ Diseñar y desarrollar una interfaz web que:
 ## 🚀 Instalación y Ejecución
 ```bash
 # Clonar el repositorio
-git clone https://github.com/usuario/frontend-asistencia-cv.git
+git clone https://github.com/CelizD/Frontend-Developer-Computer-Vision.git
 cd frontend-asistencia-cv
 
 # Instalar dependencias
