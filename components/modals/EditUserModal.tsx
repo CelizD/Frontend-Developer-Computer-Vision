@@ -1,0 +1,55 @@
+import React, { useState } from 'react';
+import { useAppContext } from '../../context/AppContext';
+import { User } from '../../types/global.d';
+
+interface EditUserModalProps {
+  user: User;
+  onClose: () => void;
+  onSave: (user: User) => void;
+}
+
+const EditUserModal: React.FC<EditUserModalProps> = ({ user, onClose, onSave }) => {
+  const { theme, t } = useAppContext();
+  
+  const [role, setRole] = useState(user.role);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSave({ ...user, role });
+  };
+
+  return (
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className={`w-full max-w-md p-6 rounded-2xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} shadow-2xl`}>
+        <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">{t('editUserModal.title')}</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="edit-user-name" className={`block text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} mb-1`}>{t('editUserModal.username')}</label>
+            <input 
+              type="text" id="edit-user-name" value={user.username} disabled
+              className={`w-full p-2 rounded-md ${theme === 'dark' ? 'bg-gray-900 border-gray-700' : 'bg-gray-200 border-gray-300'} text-gray-500 dark:text-gray-400 border`}
+            />
+          </div>
+          <div className="mb-6">
+            <label htmlFor="edit-user-role" className={`block text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} mb-1`}>{t('editUserModal.role')}</label>
+            <select 
+              id="edit-user-role" value={role} 
+              onChange={(e) => setRole(e.target.value as User['role'])}
+              className={`w-full p-2 rounded-md ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-gray-100 border-gray-300'} text-black dark:text-white border`}
+            >
+              <option value="admin">{t('sidebar.admin')}</option>
+              <option value="operador">{t('sidebar.operator')}</option>
+              <option value="viewer">{t('sidebar.viewer')}</option>
+            </select>
+          </div>
+          <div className="flex justify-end gap-3">
+            <button type="button" onClick={onClose} className="px-4 py-2 rounded-md bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-black dark:text-white">{t('editModal.cancel')}</button>
+            <button type="submit" className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-500 text-white">{t('editModal.save')}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default EditUserModal;
