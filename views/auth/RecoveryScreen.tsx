@@ -19,8 +19,8 @@ const RecoveryScreen = ({ onShowLogin }: { onShowLogin: () => void }) => {
     if (userExists) {
       setStep(2);
       setError(null);
-      // Simular envío de código de recuperación
-      webSocketService.addEvent('alert.systemInfo', { room: username }, 'info');
+      // Simular envío de código de recuperación (log)
+      webSocketService.addEvent('alert.systemInfo', { room: username }, 'info'); 
     } else {
       setError(t('alert.userNotFound'));
     }
@@ -32,7 +32,7 @@ const RecoveryScreen = ({ onShowLogin }: { onShowLogin: () => void }) => {
     setSuccess(null);
 
     // Validación simulada del código y contraseña
-    if (code !== '12345') {
+    if (code !== '12345') { // Código hardcodeado para la simulación
       setError(t('alert.invalidCode'));
       return;
     }
@@ -41,7 +41,7 @@ const RecoveryScreen = ({ onShowLogin }: { onShowLogin: () => void }) => {
       return;
     }
 
-    // Actualizar la contraseña en la lista de usuarios
+    // Lógica para actualizar la contraseña en la lista de usuarios (persistencia simulada)
     const newUsers = users.map(u => 
       u.username === username ? { ...u, password: newPassword } : u
     );
