@@ -6,7 +6,9 @@ const GeneralSettings: React.FC = () => {
   const { 
     t, theme, setTheme, 
     alertThreshold, setAlertThreshold,
-    notificationEmail, enableEmailNotifications,
+    // CORRECCIÓN: Incluir los setters reales del contexto
+    notificationEmail, setNotificationEmail, 
+    enableEmailNotifications, setEnableEmailNotifications,
     setDashboardWidgets, dashboardWidgets
   } = useAppContext();
 
@@ -16,6 +18,16 @@ const GeneralSettings: React.FC = () => {
 
   const handleThresholdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAlertThreshold(parseInt(e.target.value, 10));
+  };
+  
+  // CORRECCIÓN: Handler para el toggle de notificaciones
+  const handleEmailToggle = () => {
+    setEnableEmailNotifications(!enableEmailNotifications);
+  };
+  
+  // CORRECCIÓN: Handler para el cambio del email
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNotificationEmail(e.target.value);
   };
 
   const handleWidgetToggle = (widget: keyof typeof dashboardWidgets) => {
@@ -57,19 +69,38 @@ const GeneralSettings: React.FC = () => {
         </div>
       </div>
 
-      {/* Configuración de Notificaciones */}
+      {/* Configuración de Notificaciones (CORREGIDO) */}
       <div className="mb-6">
         <h3 className="text-lg font-medium mb-2">{t('settings.notifications')}</h3>
         <div className="space-y-4">
+          
+          {/* Input de Email de Notificación */}
+          <div>
+            <label htmlFor="notif-email" className="block text-sm font-medium mb-1">
+              {t('settings.notifEmail') /* Asumiendo esta clave para la etiqueta */}
+            </label>
+            <input
+              id="notif-email"
+              type="email"
+              value={notificationEmail}
+              onChange={handleEmailChange} // Conecta el cambio con el setter del contexto
+              placeholder="email@institucion.com"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg text-gray-900 dark:text-gray-100 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
+          {/* Toggle de Notificaciones por Correo */}
           <div className="flex items-center justify-between">
-            <div>
-              <div className="font-medium">{t('settings.notifToggle')}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">{notificationEmail}</div>
+            <div className="font-medium">
+              {t('settings.notifToggle')} 
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                {t('settings.notifDescription')} {/* Asumiendo una clave de descripción */}
+              </p>
             </div>
             <ToggleSwitch
               id="email-notif"
               enabled={enableEmailNotifications}
-              setEnabled={() => {}}
+              setEnabled={handleEmailToggle} // Conecta el toggle con el setter del contexto
             />
           </div>
         </div>

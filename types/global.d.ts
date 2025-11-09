@@ -70,6 +70,10 @@ export type AppContextType = {
   lastEvent: EventLog | null;
   historicalData: HistoricalMetric[];
   editingRoom: RoomMetric | null;
+  editingUser: User | null;
+  
+  // CORRECCIÓN: Se añaden las propiedades del Tour
+  tourStep: number;
   
   // Setters y Handlers
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
@@ -92,7 +96,10 @@ export type AppContextType = {
   setHistoricalData: React.Dispatch<React.SetStateAction<HistoricalMetric[]>>;
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setAuthView: React.Dispatch<React.SetStateAction<'login' | 'recovery'>>;
-  editingUser: User | null;
+  
+  // CORRECCIÓN: Se añaden los setters y handlers del Tour
+  setTourStep: React.Dispatch<React.SetStateAction<number>>;
+  handleTourFinish: () => void;
 };
 
 export {};

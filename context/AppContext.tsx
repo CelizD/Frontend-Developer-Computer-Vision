@@ -72,8 +72,9 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [alertThreshold, setAlertThreshold] = useLocalStorage('asistencia-threshold', 90);
   const [defaultSeats, setDefaultSeats] = useLocalStorage('asistencia-default-seats', 20);
-  const [notificationEmail] = useLocalStorage('asistencia-notif-email', 'admin@institucion.com');
-  const [enableEmailNotifications] = useLocalStorage('asistencia-notif-enable', false);
+// CORRECCIÓN 1: Se incluyeron los setters reales de useLocalStorage
+  const [notificationEmail, setNotificationEmail] = useLocalStorage('asistencia-notif-email', 'admin@institucion.com');
+  const [enableEmailNotifications, setEnableEmailNotifications] = useLocalStorage('asistencia-notif-enable', false);
   const [dashboardWidgets, setDashboardWidgets] = useLocalStorage<DashboardWidgets>('asistencia-widgets', {
     showAttendance: true,
     showTrend: true,
@@ -173,7 +174,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       const onMetricsReceived = (newMetrics: RoomMetric[]) => setLiveMetrics([...newMetrics]);
       const onEventReceived = (allEvents: EventLog[]) => {
         setEventLog(allEvents);
-        // Lógica de Toast y Sonido
+        // Lógica de Toast y Sonido (Centralizada aquí: CORRECCIÓN 3)
         if (allEvents.length > 0 && (!lastEvent || allEvents[0].id !== lastEvent.id)) {
           const newEvent = allEvents[0];
           setLastEvent(newEvent);
@@ -220,7 +221,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   }, [lastEvent]);
 
 
-  // --- 10. Valor del Context ---
+  // --- 10. Valor del Context (CORRECCIÓN 1 aplicada) ---
   const contextValue: AppContextType = {
     theme, setTheme,
     lang, setLang,
@@ -237,8 +238,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     defaultSeats, setDefaultSeats,
     notificationEmail, 
     enableEmailNotifications, 
-    setNotificationEmail: () => {}, // placeholder, no usado por useLocalStorage
-    setEnableEmailNotifications: () => {}, // placeholder, no usado por useLocalStorage
+    setNotificationEmail, // CORREGIDO: Setter real
+    setEnableEmailNotifications, // CORREGIDO: Setter real
     dashboardWidgets, setDashboardWidgets,
         users, setUsers,
         editingRoom,
@@ -252,16 +253,14 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     handleLogin, handleLogout,
     isSidebarOpen, setIsSidebarOpen,
     authView, setAuthView,
+    tourStep, // EXPUESTO para App.tsx
+    setTourStep, // EXPUESTO para App.tsx
+    handleTourFinish, // EXPUESTO para App.tsx
   };
 
   return (
     <AppContext.Provider value={contextValue}>
       {children}
-      
-      {/* 11. Modales y Toasts Globales (Renderizados desde el Provider) */}
-      {/* La lógica de renderizado de Modales y Toast debe importarse y usarse aquí 
-          (asumiendo que los componentes Toast, TourModal, EditRoomModal, EditUserModal 
-           también se moverán o ya se movieron a src/components) */}
     </AppContext.Provider>
   );
 };

@@ -1,9 +1,43 @@
+// services/webSocketService.ts
+
 import { RoomMetric, EventLog } from '../types/global.d'; // Importamos tipos
-import { playAlertSound } from '../utils/sound'; // Importamos la función de sonido
+// Se elimina la importación de playAlertSound para centralizar la lógica en AppContext
+
+// 1. Definición de la Interfaz para el Servicio
+interface WebSocketService {
+  subscribers: ((metrics: RoomMetric[]) => void)[];
+  eventSubscribers: ((events: EventLog[]) => void)[];
+  metrics: RoomMetric[];
+  events: EventLog[];
+  intervalId: any;
+  alertThreshold: number;
+
+  initialize(
+    initialMetrics: RoomMetric[],
+    initialEvents: EventLog[],
+    getAlertThreshold: () => number
+  ): void;
+
+  addEvent(
+    messageKey: string,
+    messageArgs: Record<string, string> | undefined,
+    level: 'info' | 'warn' | 'alert'
+  ): void; // Se elimina 'forceSound' de la firma
+
+  pause(): void;
+  resume(getAlertThreshold: () => number): void;
+  subscribe(callback: (metrics: RoomMetric[]) => void): void;
+  subscribeToEvents(callback: (events: EventLog[]) => void): void;
+  unsubscribe(callback: (metrics: RoomMetric[]) => void): void;
+  unsubscribeFromEvents(callback: (events: EventLog[]) => void): void;
+  updateMetricsList(newMetrics: RoomMetric[]): void;
+}
+
 
 // --- Servicio de WebSocket (Simulado) ---
 
-export const webSocketService = {
+// 2. Aplicamos la interfaz al objeto exportado
+export const webSocketService: WebSocketService = {
   subscribers: [] as ((metrics: RoomMetric[]) => void)[],
   eventSubscribers: [] as ((events: EventLog[]) => void)[],
   metrics: [] as RoomMetric[],
@@ -55,7 +89,8 @@ export const webSocketService = {
         }
 
         if (newPercentage >= this.alertThreshold && metric.percentage < this.alertThreshold) {
-          this.addEvent('alert.highOccupancy', { room: metric.room, percentage: newPercentage.toString() }, 'alert', true); // Forzar sonido de alerta aquí
+          // CORRECCIÓN: Se eliminó el parámetro 'true' de forceSound y la lógica de sonido directo.
+          this.addEvent('alert.highOccupancy', { room: metric.room, percentage: newPercentage.toString() }, 'alert'); 
           eventTriggered = true;
         }
 
@@ -75,9 +110,9 @@ export const webSocketService = {
    * @param messageKey Clave de i18n del mensaje.
    * @param messageArgs Argumentos para interpolación.
    * @param level Nivel del evento.
-   * @param forceSound Si se debe forzar el sonido (usado para alertas críticas).
    */
-  addEvent(messageKey: string, messageArgs: Record<string, string> | undefined, level: 'info' | 'warn' | 'alert', forceSound: boolean = false) {
+  // CORRECCIÓN: Se eliminó el parámetro 'forceSound' de la firma.
+  addEvent(messageKey: string, messageArgs: Record<string, string> | undefined, level: 'info' | 'warn' | 'alert') {
     const newEvent: EventLog = {
       id: crypto.randomUUID(),
       timestamp: new Date().toLocaleTimeString(),
@@ -88,8 +123,7 @@ export const webSocketService = {
     this.events = [newEvent, ...this.events].slice(0, 100);
     // Notificamos a los suscriptores del registro de eventos (para el Context)
     this.eventSubscribers.forEach(callback => callback(this.events));
-    // El Context se encarga de llamar a playAlertSound() si es necesario, pero lo forzamos aquí para la alerta de ocupación.
-    if (forceSound) playAlertSound(); 
+    // Se eliminó: if (forceSound) playAlertSound(); para evitar la doble reproducción.
   },
 
   /** Pausa la simulación. */

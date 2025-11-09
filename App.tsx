@@ -69,6 +69,8 @@ const AppWrapper = () => {
     editingRoom, setEditingRoom, 
     editingUser, setEditingUser, 
     setMetrics, setSelectedRoom, selectedRoom, 
+    // CORRECCIÓN 2: Se importan las props para el TourModal
+    tourStep, setTourStep, handleTourFinish 
   } = useAppContext();
 
   // Handler para guardar la edición de un Aula (moverse aquí desde AppProvider)
@@ -96,12 +98,12 @@ const AppWrapper = () => {
     <>
       <App />
       <Toast />
-      {/* Nota: TourModal debe manejar su lógica de paso y finalización internamente o recibir props de AppContext */}
-      <TourModal step={0} setStep={function (value: React.SetStateAction<number>): void {
-              throw new Error('Function not implemented.');
-          } } onFinish={function (): void {
-              throw new Error('Function not implemented.');
-          } } /> 
+      {/* CORRECCIÓN 2: Se pasan las props reales del contexto al TourModal para evitar el error. */}
+      <TourModal 
+            step={tourStep} 
+            setStep={setTourStep} 
+            onFinish={handleTourFinish} 
+        /> 
 
       {editingRoom && userRole === 'admin' && (
         <EditRoomModal
