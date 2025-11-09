@@ -121,7 +121,7 @@ npm start
 │   └── index.tsx        # Punto de entrada y renderizado de React
 └── 📄 package.json       # Configuración de dependencias y scripts
 
-
+```
 ## 🧑‍💻 Contribución / Contributing
 
 🍴 Forkea este repositorio
