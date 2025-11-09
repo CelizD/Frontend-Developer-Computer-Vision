@@ -1,35 +1,38 @@
 import React from 'react';
+// Importa el contexto global de la app (tema, traducciones y configuraciones)
 import { useAppContext } from '../../context/AppContext';
-import ToggleSwitch from '../ui/ToggleSwitch';
+import ToggleSwitch from '../ui/ToggleSwitch'; // Componente de switch/toggle reutilizable
 
 const GeneralSettings: React.FC = () => {
   const { 
     t, theme, setTheme, 
     alertThreshold, setAlertThreshold,
-    // CORRECCIÓN: Incluir los setters reales del contexto
     notificationEmail, setNotificationEmail, 
     enableEmailNotifications, setEnableEmailNotifications,
-    setDashboardWidgets, dashboardWidgets
+    dashboardWidgets, setDashboardWidgets
   } = useAppContext();
 
+  // Cambia el tema entre light y dark
   const handleThemeChange = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
+  // Cambia el valor del umbral de alertas
   const handleThresholdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAlertThreshold(parseInt(e.target.value, 10));
   };
   
-  // CORRECCIÓN: Handler para el toggle de notificaciones
+  // Cambia el toggle de notificaciones por email
   const handleEmailToggle = () => {
     setEnableEmailNotifications(!enableEmailNotifications);
   };
   
-  // CORRECCIÓN: Handler para el cambio del email
+  // Actualiza el email de notificación
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNotificationEmail(e.target.value);
   };
 
+  // Cambia el estado de visibilidad de un widget del dashboard
   const handleWidgetToggle = (widget: keyof typeof dashboardWidgets) => {
     setDashboardWidgets(prev => ({
       ...prev,
@@ -53,7 +56,7 @@ const GeneralSettings: React.FC = () => {
         </div>
       </div>
 
-      {/* Umbral de Alertas */}
+      {/* Umbral de alertas */}
       <div className="mb-6">
         <h3 className="text-lg font-medium mb-2">{t('settings.threshold')}</h3>
         <div className="flex items-center gap-4">
@@ -69,38 +72,38 @@ const GeneralSettings: React.FC = () => {
         </div>
       </div>
 
-      {/* Configuración de Notificaciones (CORREGIDO) */}
+      {/* Configuración de notificaciones */}
       <div className="mb-6">
         <h3 className="text-lg font-medium mb-2">{t('settings.notifications')}</h3>
         <div className="space-y-4">
           
-          {/* Input de Email de Notificación */}
+          {/* Input de Email de notificación */}
           <div>
             <label htmlFor="notif-email" className="block text-sm font-medium mb-1">
-              {t('settings.notifEmail') /* Asumiendo esta clave para la etiqueta */}
+              {t('settings.notifEmail')}
             </label>
             <input
               id="notif-email"
               type="email"
               value={notificationEmail}
-              onChange={handleEmailChange} // Conecta el cambio con el setter del contexto
+              onChange={handleEmailChange}
               placeholder="email@institucion.com"
               className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-lg text-gray-900 dark:text-gray-100 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
-          {/* Toggle de Notificaciones por Correo */}
+          {/* Toggle de Notificaciones por correo */}
           <div className="flex items-center justify-between">
             <div className="font-medium">
-              {t('settings.notifToggle')} 
+              {t('settings.notifToggle')}
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                {t('settings.notifDescription')} {/* Asumiendo una clave de descripción */}
+                {t('settings.notifDescription')}
               </p>
             </div>
             <ToggleSwitch
               id="email-notif"
               enabled={enableEmailNotifications}
-              setEnabled={handleEmailToggle} // Conecta el toggle con el setter del contexto
+              setEnabled={handleEmailToggle}
             />
           </div>
         </div>
@@ -133,4 +136,5 @@ const GeneralSettings: React.FC = () => {
 };
 
 export default GeneralSettings;
+// Alias en español
 export { GeneralSettings as ConfiguracionGeneral };

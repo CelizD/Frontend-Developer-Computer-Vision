@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import type { ChartOptions } from 'chart.js';
 import { AppContextType } from '../types/global.d'; 
 
-// Define la interfaz de propiedades para el hook (extraído del contexto y estados locales)
+// Interfaz de props que recibirá el hook, proveniente del contexto y estados locales
 interface UseAnalyticsChartDataProps {
   historicalData: AppContextType['historicalData'];
   liveMetrics: AppContextType['liveMetrics'];
@@ -25,41 +25,49 @@ export const useAnalyticsChartData = ({
     selectedMetric
 }: UseAnalyticsChartDataProps) => {
 
+    // Colores dependientes del tema
     const tickColor = theme === 'dark' ? "#d1d5db" : "#374151";
     const gridColor = theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
     
-    // 1. Opciones de Gráfico de Líneas (Line Chart Options)
+    // 1. Opciones para Gráfico de Líneas (Line Chart)
     const lineChartOptions: ChartOptions<'line'> = useMemo(() => ({
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { labels: { color: tickColor } }, title: { display: false } },
+        plugins: { 
+            legend: { labels: { color: tickColor } }, 
+            title: { display: false } 
+        },
         scales: {
             x: { ticks: { color: tickColor }, grid: { color: gridColor } },
             y: { beginAtZero: true, max: 100, ticks: { color: tickColor }, grid: { color: gridColor } },
         },
     }), [theme]);
 
-    // 2. Opciones de Gráfico de Barras (Bar Chart Options)
+    // 2. Opciones para Gráfico de Barras (Bar Chart)
     const barChartOptions: ChartOptions<'bar'> = useMemo(() => ({
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { labels: { color: tickColor } }, title: { display: false } },
+        plugins: { 
+            legend: { labels: { color: tickColor } }, 
+            title: { display: false } 
+        },
         scales: {
             x: { ticks: { color: tickColor }, grid: { color: gridColor } },
             y: { beginAtZero: true, max: 20, ticks: { color: tickColor, precision: 0 }, grid: { color: gridColor } },
         },
     }), [theme]);
     
-    // 3. Datos Filtrados para Gráfico de Tendencia Histórica (Line)
+    // 3. Datos para Gráfico de Tendencia Histórica (Line)
     const historicalChartData = useMemo(() => {
-        const timeframes = {
-            week: 7, month: 30, semester: 180
-        };
+        // Mapeo de timeframes en días
+        const timeframes = { week: 7, month: 30, semester: 180 };
         const days = timeframes[selectedTimeframe];
-        const filteredData = historicalData.slice(-days); 
+        const filteredData = historicalData.slice(-days); // últimos N días
 
+        // Etiquetas de fechas
         const labels = filteredData.map(d => new Date(d.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }));
-        
+
+        // Función para obtener porcentaje por métrica o global
         const getMetricData = (data: any, metric: string) => {
             if (metric === 'global') {
                 return data.map((d: any) => d.globalPercent);
@@ -81,7 +89,7 @@ export const useAnalyticsChartData = ({
         };
     }, [historicalData, selectedTimeframe, selectedMetric, t]);
 
-    // 4. Datos para Gráfico de Ocupación Promedio (Doughnut)
+    // 4. Datos para Gráfico Doughnut (Ocupación promedio por aula)
     const doughnutData = useMemo(() => {
         const totalMetrics = historicalData.reduce((acc, dailyData) => {
             for (const room in dailyData.rooms) {
@@ -103,15 +111,15 @@ export const useAnalyticsChartData = ({
         };
     }, [historicalData]);
 
-    // 5. Datos para Gráfico de Alertas por Aula (Bar) - Lógica de consumo de logs real
+    // 5. Datos para Gráfico de Alertas por Aula (Bar)
     const barAlertsData = useMemo(() => {
+        // Filtra solo eventos de alerta
         const alertEvents = eventLog.filter(e => e.level === 'alert'); 
         
+        // Cuenta alertas por sala
         const alertCounts = alertEvents.reduce((acc, e) => {
             const room = e.messageArgs?.room; 
-            if (room) {
-                acc[room] = (acc[room] || 0) + 1;
-            }
+            if (room) acc[room] = (acc[room] || 0) + 1;
             return acc;
         }, {} as Record<string, number>);
 
@@ -138,7 +146,7 @@ export const useAnalyticsChartData = ({
         plugins: { legend: { position: 'right', labels: { color: tickColor, padding: 20 } } },
     }), [theme]);
 
-
+    // Retorna todas las configuraciones y datasets para su uso en componentes de gráficos
     return {
         lineChartOptions,
         barChartOptions,
