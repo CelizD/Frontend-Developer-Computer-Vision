@@ -3,7 +3,6 @@
 # 💻 Frontend Developer – Computer Vision Attendance System  
 ### 🧠 Sistema de Asistencia Automatizado con Visión por Computadora  
 
-<img src="https://github.com/CelizD/Frontend-Developer-Computer-Vision/assets/banner-demo.png" alt="Banner" width="100%">
 
 ---
 
@@ -69,9 +68,7 @@ powered by **AI** and **video analytics**.
 
 ### 🔹 **Dashboard Principal**  
 Visualización en tiempo real de **porcentaje de ocupación**, **métricas de asistencia** y **alertas visuales**.  
-*(Ejemplo visual simulado)*  
 
-<img src="https://raw.githubusercontent.com/CelizD/Frontend-Developer-Computer-Vision/main/preview/dashboard-sample.png" alt="Dashboard" width="90%" style="border-radius:12px;">
 
 ---
 
@@ -90,8 +87,6 @@ Representación tipo **mapa de calor** de sillas ocupadas o vacías.
 ### 🔹 **Gráficos de Tendencia**  
 Visualización histórica del registro de asistencia mediante **Chart.js**,  
 para detectar patrones o fluctuaciones.  
-
-<img src="https://raw.githubusercontent.com/CelizD/Frontend-Developer-Computer-Vision/main/preview/attendance-chart.png" alt="Chart Preview" width="90%" style="border-radius:12px;">
 
 ---
 
