@@ -97,7 +97,7 @@ para detectar patrones o fluctuaciones.
 
 ## ⚙️ Instalación / Installation  
 
-```bash
+
 # 1️⃣ Clonar el repositorio
 git clone https://github.com/CelizD/Frontend-Developer-Computer-Vision.git
 cd Frontend-Developer-Computer-Vision
@@ -107,9 +107,8 @@ npm install
 
 # 3️⃣ Ejecutar el servidor de desarrollo
 npm start
-📂 Estructura del Proyecto / Project Structure
-bash
-Copiar código
+
+### 📂 Estructura del Proyecto / Project Structure
 📦 Frontend-Developer-Computer-Vision
 ├── 📁 src
 │   ├── 📁 components        # Componentes reutilizables (UI, gráficos, etc.)
@@ -119,22 +118,21 @@ Copiar código
 │   ├── App.tsx              # Punto de entrada principal
 │   └── index.tsx            # Render principal de React
 └── package.json
-🧑‍💻 Contribución / Contributing
+
+
+### 🧑‍💻 Contribución / Contributing
+
 🍴 Forkea este repositorio
-
 🌱 Crea una rama: git checkout -b feature/nueva-funcion
-
 💬 Realiza tus cambios y haz commit: git commit -m "Añadir nueva función"
-
 🚀 Envía tus cambios: git push origin feature/nueva-funcion
-
 🔁 Abre un Pull Request
 
-🧠 Autores / Authors
+### 🧠 Autores / Authors
 👤 Nombre	💼 Rol	🔗 GitHub
 Celiz D.	💻 Frontend Developer	@CelizD
 
-🌌 Licencia / License
+### 🌌 Licencia / License
 Distribuido bajo la licencia MIT.
 Libre para uso académico y profesional.
 
