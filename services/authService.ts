@@ -20,24 +20,38 @@ export const authService = {
     user: string,
     pass: string
   ): Promise<{ token: string | null; username: string | null }> => {
-    // Simula un retraso de red
+    
     await new Promise(res => setTimeout(res, 500));
     
-    // Obtener usuarios de localStorage o usar DEFAULT_USERS si no hay datos
-    const usersData = window.localStorage.getItem('asistencia-users');
-    const users: User[] = usersData ? JSON.parse(usersData) : DEFAULT_USERS;
-    
-    // Buscar el usuario con las credenciales dadas
-    const foundUser = users.find(u => u.username === user && u.password === pass);
-    
-    if (foundUser) {
-      // Generar un token simulado basado en el rol
-      const token = `fake-${foundUser.role}-token`;
-      return { token, username: foundUser.username };
+    try {
+      // --- ¡ASEGÚRATE DE QUE ESTA LÍNEA ES EXACTA! ---
+      //      (con '127.0.0.1' y la diagonal al final)
+      
+      const response = await fetch('http://127.0.0.1:8000/api/token/', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: user, password: pass }),
+      });
+
+      if (!response.ok) {
+        // Si el password está mal, response.ok será falso (ej. 401)
+        console.error('Error en el login (¿credenciales?):', response.statusText);
+        return { token: null, username: null };
+      }
+
+      // Si todo OK (200)
+      const data = await response.json();
+      
+      // Retornamos el token de acceso
+      return { token: data.access, username: user };
+
+    } catch (error) {
+      // Esto atrapa errores de red (ej. si el server se cae)
+      console.error('Error de red en el login:', error);
+      return { token: null, username: null };
     }
-    
-    // Credenciales inválidas
-    return { token: null, username: null };
   },
   
   /**
