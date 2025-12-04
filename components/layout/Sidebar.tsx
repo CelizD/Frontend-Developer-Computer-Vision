@@ -1,123 +1,102 @@
 import React from 'react';
-// Importa el contexto global para acceder a estado y funciones
-import { useAppContext } from '../../context/AppContext';
-import { NavItem } from '../../types/global.d'; // Tipos de navegación
+import { useAppContext, ViewType } from '../../context/AppContext';
+import './Sidebar.css';
 
-// Definición de los items de navegación y el rol mínimo requerido para acceder
-const navItems: { name: NavItem; role: 'admin' | 'operador' | 'viewer' }[] = [
-  { name: 'Dashboard', role: 'viewer' },
-  { name: 'Cámaras', role: 'viewer' },
-  { name: 'Analítica', role: 'operador' },
-  { name: 'Reportes', role: 'operador' },
-  { name: 'Registro', role: 'viewer' },
-  { name: 'Ajustes', role: 'admin' },
-];
-
-// Función para asignar un "nivel" a cada rol para comparación más fácil
-const getRoleLevel = (role: string) => {
-  if (role === 'admin') return 3;
-  if (role === 'operador') return 2;
-  return 1; // viewer
-};
-
-const Sidebar = ({ onLogout }: { onLogout: () => void }) => {
-  // Extrae del contexto: tema, traducciones, navegación activa, rol de usuario, etc.
+const Sidebar: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const { 
-    theme, t, activeNav, setActiveNav, userRole, username, 
-    isSidebarOpen, setIsSidebarOpen 
+    currentView, 
+    setCurrentView, 
+    user, 
+    theme 
   } = useAppContext();
-  
-  // Nivel del rol actual del usuario
-  const currentRoleLevel = getRoleLevel(userRole || 'viewer');
 
-  // Componente interno para renderizar cada item de navegación
-  const NavLink = ({ item }: { item: typeof navItems[0] }) => {
-    const requiredLevel = getRoleLevel(item.role); // Nivel requerido para este item
-    const isAllowed = currentRoleLevel >= requiredLevel; // Verifica si el usuario puede acceder
-    const isActive = activeNav === item.name; // Verifica si es la sección activa
+  // Definir las vistas disponibles
+  const menuItems = [
+    { id: 'dashboard' as ViewType, label: 'Dashboard', icon: '📊' },
+    { id: 'cameras' as ViewType, label: 'Cámaras', icon: '📹' },
+    { id: 'computer-vision' as ViewType, label: 'Computer Vision', icon: '👁️' },
+    { id: 'settings' as ViewType, label: 'Configuración', icon: '⚙️' },
+  ];
 
-    if (!isAllowed) return null; // No mostrar si no tiene permiso
-    
-    return (
-      <li className="mb-2">
-        <button
-          onClick={() => { setActiveNav(item.name); setIsSidebarOpen(false); }} // Cambia la vista y cierra sidebar en móvil
-          className={`w-full text-left flex items-center p-3 rounded-xl transition-all ${
-            isActive
-              ? 'bg-blue-600 text-white shadow-lg' // Estilo si es activo
-              : theme === 'dark' 
-                ? 'text-gray-300 hover:bg-gray-700' // Estilo en modo oscuro
-                : 'text-gray-700 hover:bg-gray-200' // Estilo en modo claro
-          }`}
-        >
-          {/* Icono simulado con la primera letra */}
-          <span className="mr-3 text-lg">{item.name[0]}</span>
-          <span>{t(`sidebar.${item.name.toLowerCase().replace('á', 'a')}`)}</span>
-        </button>
-      </li>
-    );
+  // Si es admin, agregar vista de usuarios
+  if (user?.role === 'admin') {
+    menuItems.splice(3, 0, { id: 'users' as ViewType, label: 'Usuarios', icon: '👥' });
+  }
+
+  const handleNavigation = (viewId: ViewType) => {
+    setCurrentView(viewId);
+    // Cerrar sidebar en móvil si está abierto
+    const mobileOverlay = document.querySelector('.mobile-overlay');
+    if (mobileOverlay?.classList.contains('active')) {
+      mobileOverlay.classList.remove('active');
+    }
   };
 
-  // Texto del rol del usuario traducido
-  const roleText = t(`sidebar.${userRole || 'viewer'}`);
-
   return (
-    <div 
-      className={`
-        fixed md:relative z-40 md:z-auto 
-        transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0
-        w-64 p-6 flex flex-col transition-transform duration-300
-        ${theme === 'dark' ? 'bg-gray-800 border-r border-gray-700' : 'bg-white border-r border-gray-200'}
-        h-full md:h-screen
-      `}
-    >
-      {/* Encabezado del Sidebar */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-extrabold text-blue-500">{t('sidebar.title')}</h2>
-        <p className="text-sm font-light mt-1">{t('sidebar.subtitle')}</p>
+    <aside className={`sidebar ${theme === 'dark' ? 'dark' : 'light'}`}>
+      {/* Logo */}
+      <div className="sidebar-logo">
+        <div className="logo-icon">📹</div>
+        <h2>Cam IP System</h2>
+        <p className="logo-subtitle">Frontend</p>
       </div>
-
-      {/* Navegación principal */}
-      <nav className="flex-1 overflow-y-auto">
-        <ul>
-          {navItems.map(item => <NavLink key={item.name} item={item} />)}
+      
+      {/* Información del usuario */}
+      <div className="user-info">
+        <div className="user-avatar">
+          {user?.role === 'admin' ? '👨‍💼' : '👤'}
+        </div>
+        <div className="user-details">
+          <p className="username">{user?.username || 'Usuario'}</p>
+          <p className="user-role">{user?.role || 'user'}</p>
+          <p className="user-email">{user?.email || 'email@ejemplo.com'}</p>
+        </div>
+      </div>
+      
+      {/* Menú de navegación */}
+      <nav className="sidebar-nav">
+        <ul className="nav-menu">
+          {menuItems.map(item => (
+            <li key={item.id}>
+              <button
+                className={`nav-item ${currentView === item.id ? 'active' : ''}`}
+                onClick={() => handleNavigation(item.id)}
+              >
+                <span className="nav-icon">{item.icon}</span>
+                <span className="nav-label">{item.label}</span>
+                {currentView === item.id && (
+                  <span className="active-indicator"></span>
+                )}
+              </button>
+            </li>
+          ))}
         </ul>
       </nav>
-
-      {/* Pie de página con perfil y botón de logout */}
-      <div className={`pt-6 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
-        {/* Perfil de usuario */}
-        <div 
-          onClick={() => setActiveNav('Perfil')} // Navega a Perfil
-          className={`flex items-center p-3 rounded-xl cursor-pointer transition-colors mb-4 ${
-            activeNav === 'Perfil' 
-              ? 'bg-blue-600 text-white shadow-lg'
-              : theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200'
-          }`}
-        >
-          {/* Avatar con inicial */}
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mr-3 
-            ${activeNav === 'Perfil' ? 'bg-white text-blue-600' : 'bg-blue-600 text-white'}
-          `}>
-            {username ? username[0].toUpperCase() : 'U'}
-          </div>
-          <div>
-            <p className="font-semibold text-sm">{username}</p>
-            <p className="text-xs opacity-75">{roleText}</p>
-          </div>
+      
+      {/* Estadísticas rápidas */}
+      <div className="sidebar-stats">
+        <div className="stat-item">
+          <span className="stat-label">Cámaras:</span>
+          <span className="stat-value">0</span>
         </div>
-
-        {/* Botón de Logout */}
-        <button
-          onClick={onLogout}
-          className={`w-full p-3 rounded-xl font-semibold transition-colors 
-            ${theme === 'dark' ? 'bg-red-700 hover:bg-red-600 text-white' : 'bg-red-500 hover:bg-red-600 text-white'}
-          `}
-        >
-          {t('sidebar.logout')}
-        </button>
+        <div className="stat-item">
+          <span className="stat-label">Online:</span>
+          <span className="stat-value">0</span>
+        </div>
       </div>
-    </div>
+      
+      {/* Footer del sidebar */}
+      <div className="sidebar-footer">
+        <button onClick={onLogout} className="logout-btn">
+          <span className="logout-icon">🚪</span>
+          <span>Cerrar Sesión</span>
+        </button>
+        
+        <div className="theme-toggle">
+          <span className="theme-label">Tema {theme === 'dark' ? '🌙' : '☀️'}</span>
+        </div>
+      </div>
+    </aside>
   );
 };
 
