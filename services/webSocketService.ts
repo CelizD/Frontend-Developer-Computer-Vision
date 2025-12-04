@@ -16,6 +16,8 @@ interface WebSocketService {
     getAlertThreshold: () => number
   ): void;
 
+  fetchData(): Promise<void>;
+
   addEvent(
     messageKey: string,
     messageArgs: Record<string, string> | undefined,
@@ -31,7 +33,7 @@ interface WebSocketService {
   updateMetricsList(newMetrics: RoomMetric[]): void;
 }
 
-// --- Servicio Simulado de WebSocket ---
+// --- Servicio Modificado para Polling al Backend ---
 export const webSocketService: WebSocketService = {
   subscribers: [],
   eventSubscribers: [],
@@ -41,66 +43,92 @@ export const webSocketService: WebSocketService = {
   alertThreshold: 90, // Valor por defecto, se actualiza al iniciar/reanudar.
 
   /**
-   * Inicializa la simulación de WebSocket y comienza la generación de métricas y eventos.
+   * Inicializa el polling (simulación de WebSocket) para obtener datos del backend.
    */
   initialize(initialMetrics, initialEvents, getAlertThreshold) {
+    // Establecer estado inicial
     this.metrics = [...initialMetrics];
     this.events = [...initialEvents];
+    this.alertThreshold = getAlertThreshold();
 
+    // Ejecutar una carga inmediata
+    this.fetchData();
+
+    // Limpiar intervalo previo si existe
     if (this.intervalId) clearInterval(this.intervalId);
 
+    // Configurar polling cada 3 segundos
     this.intervalId = setInterval(() => {
+      // Actualizar el umbral en cada ciclo por si cambió en la configuración
       this.alertThreshold = getAlertThreshold();
-      let eventTriggered = false;
+      this.fetchData();
+    }, 3000);
+  },
 
-      // Actualiza cada métrica con ocupación y estado aleatorios
-      this.metrics = this.metrics.map(metric => {
-        let newOccupied = metric.occupied + Math.floor(Math.random() * 3) - 1;
-        newOccupied = Math.max(0, Math.min(metric.total, newOccupied));
-
-        const newPercentage = metric.total > 0
-          ? Math.round((newOccupied / metric.total) * 100)
-          : 0;
-
-        let newStatus = metric.status;
-        const randomStatus = Math.random();
-
-        // Simulación de cambios de estado aleatorios con generación de eventos
-        if (metric.status === 'Online' && randomStatus < 0.02) {
-          newStatus = 'Offline';
-          this.addEvent('alert.cameraOffline', { room: metric.room }, 'alert');
-          eventTriggered = true;
-        } else if (metric.status === 'Online' && randomStatus < 0.05) {
-          newStatus = 'Luz Baja';
-          this.addEvent('alert.lowLight', { room: metric.room }, 'warn');
-          eventTriggered = true;
-        } else if (metric.status !== 'Online' && randomStatus < 0.1) {
-          newStatus = 'Online';
-          this.addEvent('alert.cameraOnline', { room: metric.room }, 'info');
-          eventTriggered = true;
+  /**
+   * Obtiene datos reales de la API de Django.
+   */
+  async fetchData() {
+    try {
+      // Petición directa sin token (API pública o sesión por cookie)
+      const response = await fetch('http://127.0.0.1:8000/api/stats/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
         }
-
-        // Verifica si se supera el umbral de ocupación
-        if (newPercentage >= this.alertThreshold && metric.percentage < this.alertThreshold) {
-          this.addEvent(
-            'alert.highOccupancy',
-            { room: metric.room, percentage: newPercentage.toString() },
-            'alert'
-          );
-          eventTriggered = true;
-        }
-
-        return { ...metric, occupied: newOccupied, percentage: newPercentage, status: newStatus };
       });
+      
+      if (!response.ok) {
+        throw new Error(`Error fetching data: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
 
-      // Notifica a todos los suscriptores
-      this.subscribers.forEach(cb => cb(this.metrics));
+      // Transformamos la respuesta de Django al formato RoomMetric del frontend
+      // Se asume que data.yolo_live_statistics viene de 'api/stats/'
+      if (data && data.yolo_live_statistics) {
+        const mappedMetrics: RoomMetric[] = data.yolo_live_statistics.map((cam: any) => {
+            // Cálculos básicos basados en los datos reales
+            const occupied = cam.live_person_count || 0;
+            const total = 10; // Capacidad por defecto (ajustar según lógica de negocio)
+            
+            // Calcular porcentaje asegurando que no sea NaN
+            const percentage = total > 0 ? Math.min(Math.round((occupied / total) * 100), 100) : 0;
+            
+            // Determinar estado basado en el backend
+            let status: 'Online' | 'Offline' | 'Luz Baja' = 'Offline';
+            if (cam.status === 'running' || cam.status === 'online') {
+                status = 'Online';
+            }
 
-    }, 3000); // Actualiza cada 3 segundos
+            // Lógica de alertas local basada en datos reales (opcional)
+            if (percentage >= this.alertThreshold) {
+                 // Aquí podrías disparar un evento si quisieras notificaciones frontend
+                 // this.addEvent('alert.highOccupancy', { room: cam.camera_name }, 'alert');
+            }
+
+            return {
+                id: cam.camera_name, // Usamos el nombre como ID
+                room: cam.camera_name,
+                total: total,
+                occupied: occupied,
+                percentage: percentage,
+                status: status
+            };
+        });
+
+        this.updateMetricsList(mappedMetrics);
+      }
+
+    } catch (error) {
+      console.error("Error conectando con el backend:", error);
+      // Opcional: Podrías cambiar el estado de las cámaras a 'Offline' aquí si falla la red
+    }
   },
 
   /**
    * Añade un evento al registro y notifica a los suscriptores.
+   * Útil para alertas generadas localmente o traídas del backend.
    */
   addEvent(messageKey, messageArgs, level) {
     const newEvent: EventLog = {
@@ -115,15 +143,18 @@ export const webSocketService: WebSocketService = {
     this.eventSubscribers.forEach(cb => cb(this.events));
   },
 
-  /** Pausa la simulación de WebSocket */
+  /** Pausa el polling */
   pause() {
     if (this.intervalId) clearInterval(this.intervalId);
     this.intervalId = null;
   },
 
-  /** Reanuda la simulación de WebSocket */
+  /** Reanuda el polling */
   resume(getAlertThreshold) {
-    if (!this.intervalId) this.initialize(this.metrics, this.events, getAlertThreshold);
+    if (!this.intervalId) {
+        // Reutilizamos initialize para arrancar de nuevo
+        this.initialize(this.metrics, this.events, getAlertThreshold);
+    }
   },
 
   /** Suscribe un callback a las métricas */
@@ -144,16 +175,7 @@ export const webSocketService: WebSocketService = {
 
   /** Actualiza la lista de métricas y sincroniza con los suscriptores */
   updateMetricsList(newMetrics) {
-    const syncedMetrics = newMetrics.map(newMetric => {
-      const existing = this.metrics.find(m => m.room === newMetric.room);
-      return {
-        ...newMetric,
-        occupied: existing ? existing.occupied : newMetric.occupied,
-        percentage: existing ? existing.percentage : newMetric.percentage,
-        status: existing ? existing.status : newMetric.status,
-      };
-    });
-    this.metrics = syncedMetrics;
+    this.metrics = newMetrics;
     this.subscribers.forEach(cb => cb(this.metrics));
   },
 };
